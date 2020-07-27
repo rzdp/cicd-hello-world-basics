@@ -5,15 +5,21 @@ pipeline {
     stages {
 
         stage("build") {
-            bat 'echo Building the dev application..'
+            steps {
+                echo 'Building the dev application..'
+            }
         }
 
         stage("test") {
-            bat 'echo Testing the dev application..'
+            steps {
+                echo 'Testing the dev application..'
+            }
         }
 
         stage("deploy") {
-            bat 'echo Deploying the dev application..'
+            steps {
+                echo 'Deploying the dev application..'
+            }
         }
     }
 }
