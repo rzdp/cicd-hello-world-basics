@@ -4,16 +4,30 @@ pipeline {
 
     stages {
 
-        stage("build") {
+        stage("Clean Application") {
             steps {
                 echo 'Cleaning the dev application..'
-                echo 'Building the dev application..'
+                withMaven(maven : 'apache-maven-3.6.3') {
+                    bat 'mvn clean'
+                }
             }
         }
-
-        stage("test") {
+        
+        stage("Build Application") {
+            steps {
+                echo 'Building the dev application..'
+                withMaven(maven : 'apache-maven-3.6.3') {
+                    bat 'mvn package'
+                }
+            }
+        }
+        
+        stage("Test Application") {
             steps {
                 echo 'Testing the dev application..'
+                withMaven(maven : 'apache-maven-3.6.3') {
+                    bat 'mvn test'
+                }
             }
         }
 
