@@ -6,6 +6,7 @@ pipeline {
 
         stage("build") {
             steps {
+                echo 'Cleaning the dev application..'
                 echo 'Building the dev application..'
             }
         }
