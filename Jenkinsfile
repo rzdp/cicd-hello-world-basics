@@ -34,6 +34,7 @@ pipeline {
         stage("deploy") {
             steps {
                 echo 'Deploying the dev application..'
+                bat 'java -jar cicd-hello-world-basics-0.0.1-SNAPSHOT.jar'
             }
         }
     }
