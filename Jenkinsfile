@@ -2,6 +2,13 @@ pipeline {
 
     agent any
 
+    environment {
+        registry = 'rzdp97/cicd-hello-world-basics'
+        tag = '0.0.1-SNAPSHOT'
+        registryCredential = 'DOCKER_CREDENTIALS'
+        dockerImage = ''
+    }
+
     stages {
 
         stage("Clean Application") {
@@ -13,7 +20,7 @@ pipeline {
             }
         }
         
-        stage("Building & Testing Application") {
+        stage("Build & Test Application") {
             steps {
                 echo 'Building and testing dev application..'
                 withMaven(maven : 'apache-maven-3.6.3') {
@@ -22,32 +29,19 @@ pipeline {
             }
         }
 
-        stage("Login Docker") {
-            steps {
-                echo 'Logging in on docker...'
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'DOCKER_CREDENTIALS',
-                        usernameVariable: 'USERNAME',
-                        passwordVariable: 'PASSWORD'
-                    )
-                ]) {
-                    bat 'docker login -u ${USERNAME} -p ${PASSWORD}'
-                }
-            }
-        }
-
-        stage("Create Image") {
+        stage("Create Docker Image") {
             steps {
                 echo 'Creating docker image..'
-                bat 'docker build -t rzdp97/cicd-hello-world-basics:0.0.1-SNAPSHOT .'
+                dockerImage = docker.build registry + ':' + tag
             }
         }
 
-        stage("Push Image") {
+        stage("Push Docker Image") {
             steps {
                 echo 'Pushing docker image..'
-                bat 'docker push rzdp97/cicd-hello-world-basics:0.0.1-SNAPSHOT'
+                docker.withRegistry('', registryCredential) {
+                    dockerImage.push()
+                }
             }
         }
     }
