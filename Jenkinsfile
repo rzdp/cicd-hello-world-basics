@@ -2,7 +2,7 @@ pipeline {
 
     environment {
         registry = 'rzdp97/cicd-hello-world-basics'
-        tag = '0.0.1-SNAPSHOT'
+        registryTag = '0.0.1-SNAPSHOT'
         registryCredential = 'DOCKER_CREDENTIALS'
         dockerImage = ''
     }
@@ -32,15 +32,19 @@ pipeline {
         stage("Create Docker Image") {
             steps {
                 echo 'Creating docker image..'
-                dockerImage = docker.build registry + ':' + tag
+                script {
+                    dockerImage = docker.build registry + ':' + registryTag
+                }
             }
         }
 
         stage("Push Docker Image") {
             steps {
                 echo 'Pushing docker image..'
-                docker.withRegistry('', registryCredential) {
-                    dockerImage.push()
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
                 }
             }
         }
