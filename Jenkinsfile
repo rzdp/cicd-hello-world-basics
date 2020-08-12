@@ -22,6 +22,21 @@ pipeline {
             }
         }
 
+        stage("Login Docker") {
+            steps {
+                echo 'Logging in on docker...'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'DOCKER_CREDENTIALS',
+                        usernameVariable: 'USERNAME'
+                        passwordVariable: 'PASSWORD'
+                    )
+                ]) {
+                    bat 'docker login -u ${USERNAME} -p ${PASSWORD}'
+                }
+            }
+        }
+
         stage("Create Image") {
             steps {
                 echo 'Creating docker image..'
