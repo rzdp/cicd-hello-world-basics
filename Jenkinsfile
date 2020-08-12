@@ -25,14 +25,14 @@ pipeline {
         stage("Create Image") {
             steps {
                 echo 'Creating docker image..'
-                bat 'docker build -t rzdp/cicd-hello-world-basics:0.0.1-SNAPSHOT .'
+                bat 'docker build -t rzdp97/cicd-hello-world-basics:0.0.1-SNAPSHOT .'
             }
         }
 
         stage("Push Image") {
             steps {
                 echo 'Pushing docker image..'
-                bat 'docker push rzdp/cicd-hello-world-basics:0.0.1-SNAPSHOT'
+                bat 'docker push rzdp97/cicd-hello-world-basics:0.0.1-SNAPSHOT'
             }
         }
     }
