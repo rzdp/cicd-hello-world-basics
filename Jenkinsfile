@@ -1,13 +1,13 @@
 pipeline {
 
-    agent any
-
     environment {
         registry = 'rzdp97/cicd-hello-world-basics'
         tag = '0.0.1-SNAPSHOT'
         registryCredential = 'DOCKER_CREDENTIALS'
         dockerImage = ''
     }
+
+    agent any
 
     stages {
 
