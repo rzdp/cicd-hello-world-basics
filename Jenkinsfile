@@ -6,35 +6,33 @@ pipeline {
 
         stage("Clean Application") {
             steps {
-                echo 'Cleaning the dev application..'
+                echo 'Cleaning dev application..'
                 withMaven(maven : 'apache-maven-3.6.3') {
                     bat 'mvn clean'
                 }
             }
         }
         
-        stage("Build Application") {
+        stage("Building & Testing Application") {
             steps {
-                echo 'Building the dev application..'
+                echo 'Building and testing dev application..'
                 withMaven(maven : 'apache-maven-3.6.3') {
                     bat 'mvn package'
                 }
             }
         }
-        
-        stage("Test Application") {
+
+        stage("Create Image") {
             steps {
-                echo 'Testing the dev application..'
-                withMaven(maven : 'apache-maven-3.6.3') {
-                    bat 'mvn test'
-                }
+                echo 'Creating docker image..'
+                bat 'docker build -t rzdp/cicd-hello-world-basics:0.0.1-SNAPSHOT .'
             }
         }
 
-        stage("deploy") {
+        stage("Push Image") {
             steps {
-                echo 'Deploying the dev application..'
-                bat 'java -jar target/cicd-hello-world-basics-0.0.1-SNAPSHOT.jar'
+                echo 'Pushing docker image..'
+                bat 'docker push rzdp/cicd-hello-world-basics:0.0.1-SNAPSHOT'
             }
         }
     }
